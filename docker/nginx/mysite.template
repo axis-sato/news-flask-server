@@ -1,0 +1,9 @@
+server {
+    listen      ${NGINX_PORT};
+    server_name ${NGINX_HOST};
+    charset     utf-8;
+    location / {
+        include uwsgi_params;
+        proxy_pass http://${UWSGI_PASS};
+    }
+}

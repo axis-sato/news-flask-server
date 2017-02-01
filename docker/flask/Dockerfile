@@ -6,5 +6,6 @@ WORKDIR /app
 
 RUN pip install flask uwsgi
 
+EXPOSE 80
 
-ENTRYPOINT ["uwsgi", "--socket", "0.0.0.0:5000", "--protocol=http", "-w", "wsgi:app"]
+ENTRYPOINT ["uwsgi", "--socket", "0.0.0.0:80", "--protocol=http", "-w", "wsgi:app"]

@@ -3,10 +3,27 @@ version: "3"
 
 services:
 
+  # App Server Container
   flask:
     build:
       context: ./flask
     volumes:
       - ../app:/app
+    expose:
+      - 80
+
+  # Web Server Container
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+       - ./nginx/mysite.template:/etc/nginx/conf.d/mysite.template
+    environment:
+     - NGINX_HOST=localhost
+     - NGINX_PORT=80
+     - UWSGI_PASS=flask
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    depends_on:
+      - flask
     ports:
-      - 5000
+      - 8080:80
