@@ -4,6 +4,6 @@ server {
     charset     utf-8;
     location / {
         include uwsgi_params;
-        proxy_pass http://${UWSGI_PASS};
+        uwsgi_pass ${UWSGI_PASS};
     }
 }

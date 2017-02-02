@@ -10,7 +10,7 @@ services:
     volumes:
       - ../app:/app
     expose:
-      - 80
+      - 3031
 
   # Web Server Container
   nginx:
@@ -21,7 +21,7 @@ services:
     environment:
      - NGINX_HOST=localhost
      - NGINX_PORT=80
-     - UWSGI_PASS=flask
+     - UWSGI_PASS=flask:3031
     command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
     depends_on:
       - flask
