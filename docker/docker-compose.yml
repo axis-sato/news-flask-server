@@ -18,6 +18,7 @@ services:
       context: ./nginx
     volumes:
        - ./nginx/mysite.template:/etc/nginx/conf.d/mysite.template
+       - ./log/nginx:/var/log/nginx
     environment:
      - NGINX_HOST=localhost
      - NGINX_PORT=80
