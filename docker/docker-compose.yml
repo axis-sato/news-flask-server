@@ -9,6 +9,7 @@ services:
       context: ./flask
     volumes:
       - ../app:/app
+      - ./log/uwsgi:/var/log/uwsgi
     expose:
       - 3031
 
