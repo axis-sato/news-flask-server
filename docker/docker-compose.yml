@@ -37,13 +37,14 @@ services:
     build:
       context: ./mysql
     volumes:
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./mysql/data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=news
       - MYSQL_USER=news
       - MYSQL_PASSWORD=secret
-    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+#    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
     expose:
       - 3306
     ports:
