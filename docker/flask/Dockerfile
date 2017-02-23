@@ -2,10 +2,10 @@ FROM python:3.6
 
 LABEL maintainer="c8112002"
 
-COPY . /app
-
 WORKDIR /app
 
-RUN pip install -r requirements.txt
+RUN pip install flask uwsgi
 
-ENTRYPOINT ["uwsgi", "--ini", "uwsgi.ini"]
+COPY ./docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]

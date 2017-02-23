@@ -3,18 +3,6 @@ version: "3"
 
 services:
 
-  # App Server Container
-  flask:
-    build:
-      context: ./flask
-    volumes:
-      - ../app:/app
-      - ./log/uwsgi:/var/log/uwsgi
-    links:
-      - mysql:db
-    expose:
-      - 3031
-
   # Web Server Container
   nginx:
     build:
@@ -31,6 +19,18 @@ services:
       - flask
     ports:
       - 8080:80
+
+  # App Server Container
+  flask:
+    build:
+      context: ./flask
+    volumes:
+      - ../app:/app
+      - ./log/uwsgi:/var/log/uwsgi
+    links:
+      - mysql:db
+    expose:
+      - 3031
 
   # DB Server Container
   mysql:
