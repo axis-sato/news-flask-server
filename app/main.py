@@ -12,8 +12,5 @@ setup_logger(app)
 def index():
     articles = Article.query.all()
     app.logger.debug(articles)
-    app.logger.info(articles)
-    app.logger.warn(articles)
-    app.logger.error(articles)
 
     return jsonify(articles=[a.serialize() for a in articles])
