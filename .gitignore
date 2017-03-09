@@ -1,3 +1,4 @@
 .idea
 docker/log
 docker/mysql/data
+app/logs
