@@ -8,7 +8,7 @@ setup_db(app)
 setup_logger(app)
 
 
-@app.route('/')
+@app.route('/v1')
 def index():
     limit = int(request.args.get('limit'))
     if limit is None:
