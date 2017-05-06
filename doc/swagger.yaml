@@ -9,10 +9,14 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 host: 'localhost:8080'
-basePath: /
+basePath: /v1
 tags:
   - name: articles
     description: 記事
+  - name: tag_articles
+    description: 指定されたタグの記事
+  - name: add
+    description: pocketに記事を追加
 schemes:
   - http
 paths:
@@ -22,7 +26,6 @@ paths:
         - articles
       summary: Fetch articles
       description: ''
-      operationId: addPet
       consumes:
         - application/json
       produces:
@@ -45,28 +48,129 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/Articles'
-securityDefinitions:
-  petstore_auth:
-    type: oauth2
-    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
-    flow: implicit
-    scopes:
-      'write:pets': modify pets in your account
-      'read:pets': read your pets
-  api_key:
-    type: apiKey
-    name: api_key
-    in: header
+  '/articles/tag/{tag_name}':
+    get:
+      tags:
+        - tag_articles
+      summary: Fetch articles which have the specified tag
+      description: ''
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: tag_name
+          in: path
+          description: タグ名
+          required: true
+          type: string
+        - name: limit
+          in: query
+          description: 取得件数
+          required: false
+          type: number
+          default: 5
+        - name: offset
+          in: query
+          description: オフセット
+          required: false
+          type: number
+          default: 0
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/Articles'
+  /add:
+    post:
+      tags:
+        - add
+      summary: add an airticle to Pocket
+      description: Pocketに記事を追加する
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: article_info
+          in: body
+          description: 記事情報
+          required: true
+          schema:
+            $ref: '#/definitions/AddArticle'
+      responses:
+        '200':
+          description: Article added.
+          schema:
+            $ref: '#/definitions/Article'
+        '400':
+          description: Bad requiest.
+          schema:
+            $ref: '#/definitions/Error'
+        '422':
+          description: Unprocessable Entity.
+          schema:
+            $ref: '#/definitions/UnprocessableEntityError'
 definitions:
   Article:
     type: object
     properties:
       id:
         type: integer
-        format: int64
       title:
         type: string
+      url:
+        type: string
+      thumbnail:
+        type: string
+      tags:
+        type: array
+        items:
+          $ref: '#/definitions/Tag'
   Articles:
     type: array
     items:
       $ref: '#/definitions/Article'
+  Tag:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+  AddArticle:
+    type: object
+    properties:
+      article_id:
+        type: integer
+      tag_names:
+        type: array
+        description: 記事に紐付けるタグ名の配列
+        items:
+          type: string
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+  UnprocessableEntityError:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          properties:
+            code:
+              type: integer
+            parameter:
+              type: string
+              description: 不正なデータを渡したリクエストパラメータ名
+            message:
+              type: string
