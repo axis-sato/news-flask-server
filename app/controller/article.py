@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, current_app
 from model.article import Article
+from model.tag import Tag
 
 api = Blueprint("api", __name__, url_prefix="/v1")
 
@@ -16,6 +17,8 @@ def show_articles():
     current_app.logger.debug(f"limit: {limit}")
 
     articles = Article.query.offset(offset).limit(limit)
+    tags = Tag.query.limit(3)
+    current_app.logger.debug(f"tags: {tags}")
     current_app.logger.debug(articles)
 
     articles_count = Article.query.count()
