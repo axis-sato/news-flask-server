@@ -2,11 +2,12 @@ from .database import db
 
 class ArticleTag(db.Model):
     __tablename__ = 'article_tags'
-    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
-    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'))
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)
 
-    # def __init__(self):
-    #     pass
+    def __init__(self, article_id, tag_id):
+        self.article_id = article_id
+        self.tag_id = tag_id
 
     def serialize(self):
         return {
