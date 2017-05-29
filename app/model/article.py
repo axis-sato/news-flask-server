@@ -24,7 +24,7 @@ class Article(db.Model):
             'body': self.body,
             'url': self.url,
             'thumbnail': self.thumbnail,
-            'tags': self.tags
+            'tags': [t.serialize() for t in self.tags]
         }
 
     def __repr__(self):
