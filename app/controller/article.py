@@ -4,13 +4,17 @@ from model.article import Article
 api = Blueprint("api", __name__, url_prefix="/v1")
 
 
+DEFAULT_LIMIT  = 5
+DEFAULT_OFFSET = 0
+
 @api.route('/articles')
 def show_articles():
+
     l = request.args.get('limit')
-    limit = int(l) if l is not None else 5
+    limit = int(l) if l is not None else DEFAULT_LIMIT
 
     o= request.args.get('offset')
-    offset = int(o) if o is not None else 0
+    offset = int(o) if o is not None else DEFAULT_OFFSET
 
     articles = Article.query.offset(offset).limit(limit)
     # current_app.logger.debug(articles)
