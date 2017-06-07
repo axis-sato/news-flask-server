@@ -3,22 +3,17 @@ from model.article import Article
 
 api = Blueprint("api", __name__, url_prefix="/v1")
 
+
 @api.route('/articles')
 def show_articles():
-    limit = int(request.args.get('limit'))
-    if limit is None:
-        limit = 5
-    offset = int(request.args.get('offset'))
-    if offset is None:
-        offset = 0
+    l = request.args.get('limit')
+    limit = int(l) if l is not None else 5
 
-    # current_app.logger.debug(f"offset: {offset}")
-    # current_app.logger.debug(f"limit: {limit}")
+    o= request.args.get('offset')
+    offset = int(o) if o is not None else 0
 
     articles = Article.query.offset(offset).limit(limit)
     # current_app.logger.debug(articles)
-    # tags = Tag.query.limit(3)
-    # current_app.logger.debug(f"tags: {tags}")
 
     articles_count = Article.query.count()
     next_offset = min(limit + offset, articles_count)
