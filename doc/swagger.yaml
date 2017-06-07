@@ -128,9 +128,22 @@ definitions:
         items:
           $ref: '#/definitions/Tag'
   Articles:
-    type: array
-    items:
-      $ref: '#/definitions/Article'
+    type: object
+    properties:
+      articles:
+        type: array
+        items:
+          $ref: '#/definitions/Article'
+      isNext:
+        type: boolean
+      nextOffset:
+        type: integer
+      limit:
+        type: integer
+        description: リクエストに設定されたlimit
+      offset:
+        type: integer
+        description: リクエストに設定されたoffset
   Tag:
     type: object
     properties:
