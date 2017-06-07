@@ -23,5 +23,6 @@ def show_articles():
         articles=[a.serialize() for a in articles],
         nextOffset=next_offset,
         isNext=is_next,
-        limit=limit
+        limit=limit,
+        offset=offset
     )
