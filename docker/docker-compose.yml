@@ -40,6 +40,7 @@ services:
       - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./mysql/init.d:/docker-entrypoint-initdb.d
       - ./mysql/data:/var/lib/mysql
+      - ./log/mysql:/var/log/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=news
