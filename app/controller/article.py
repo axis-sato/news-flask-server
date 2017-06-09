@@ -76,9 +76,18 @@ def add():
     article_id = request.json['article_id']
     tag_names  = request.json['tag_names']
 
+    article = Article.query\
+        .filter(Article.id == article_id)\
+        .first()
+
+    current_app.logger.debug(article)
+
     # Pocketにpostする
 
-    return jsonify()
+
+    return jsonify(
+        article.serialize()
+    )
 
 
 '''
