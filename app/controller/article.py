@@ -43,7 +43,6 @@ def show_tag_articles(tag_name):
 '''
 GET articles
 '''
-
 @api.route('/articles')
 def show_articles():
 
@@ -64,6 +63,22 @@ def show_articles():
         limit=limit,
         offset=offset
     )
+
+
+'''
+Post add
+'''
+@api.route('/add', methods=['POST'])
+def add():
+    # TODO: Validation
+
+    current_app.logger.debug(request.json)
+    article_id = request.json['article_id']
+    tag_names  = request.json['tag_names']
+
+    # Pocketにpostする
+
+    return jsonify()
 
 
 '''
