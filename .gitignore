@@ -2,3 +2,4 @@
 docker/log
 docker/mysql/data
 app/logs
+app/site-packages
