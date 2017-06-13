@@ -3,6 +3,7 @@ from model.article import Article
 from model.tag import Tag
 from model.article_tag import ArticleTag
 from model.database import db
+from validator import AddValidator
 
 api = Blueprint("api", __name__, url_prefix="/v1")
 
@@ -71,6 +72,10 @@ Post add
 @api.route('/add', methods=['POST'])
 def add():
     # TODO: Validation
+    validator = AddValidator(request)
+
+    if not validator.validate():
+        return jsonify(success=False, errors=validator.errors)
 
     current_app.logger.debug(request.json)
     article_id = request.json['article_id']
