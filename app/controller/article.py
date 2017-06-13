@@ -3,7 +3,8 @@ from model.article import Article
 from model.tag import Tag
 from model.article_tag import ArticleTag
 from model.database import db
-from validator import AddValidator
+from validator.schemas import add_schema
+from validator.validator import validate_schema
 
 api = Blueprint("api", __name__, url_prefix="/v1")
 
@@ -70,12 +71,8 @@ def show_articles():
 Post add
 '''
 @api.route('/add', methods=['POST'])
+@validate_schema(add_schema)
 def add():
-    # TODO: Validation
-    validator = AddValidator(request)
-
-    if not validator.validate():
-        return jsonify(success=False, errors=validator.errors)
 
     current_app.logger.debug(request.json)
     article_id = request.json['article_id']
