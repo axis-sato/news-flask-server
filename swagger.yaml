@@ -108,9 +108,9 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '422':
-          description: Unprocessable Entity.
+          description: Not Acceptable.
           schema:
-            $ref: '#/definitions/UnprocessableEntityError'
+            $ref: '#/definitions/NotAcceptableEntityError'
 definitions:
   Article:
     type: object
@@ -168,7 +168,7 @@ definitions:
         type: integer
       message:
         type: string
-  UnprocessableEntityError:
+  NotAcceptableEntityError:
     type: object
     properties:
       code:

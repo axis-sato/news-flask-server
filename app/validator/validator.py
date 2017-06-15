@@ -25,7 +25,7 @@ def validate_schema(schema):
                 response = jsonify(dict(success=False,
                                         message="invalid input",
                                         errors=errors))
-                response.status_code = 406
+                response.status_code = 422
                 return response
             else:
                 return fn(*args, **kwargs)
