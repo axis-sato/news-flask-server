@@ -18,7 +18,7 @@ services:
     depends_on:
       - flask
     ports:
-      - 8080:80
+      - 3000:80
 
   # App Server Container
   flask:
