@@ -151,6 +151,9 @@ definitions:
         type: string
       thumbnail:
         type: string
+      published_at:
+        type: string
+        format: dateTime
       tags:
         type: array
         items:

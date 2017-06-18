@@ -52,7 +52,10 @@ def show_articles():
     limit  = _get_article_limit(request.args.get('limit'))
     offset = _get_offset(request.args.get('offset'))
 
-    articles = Article.query.offset(offset).limit(limit)
+    articles = Article.query \
+        .order_by(Article.published_at.desc(), Article.id.desc())\
+        .offset(offset)\
+        .limit(limit)
     # current_app.logger.debug(articles)
 
     articles_count = Article.query.count()
