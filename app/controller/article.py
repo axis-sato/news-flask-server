@@ -10,6 +10,7 @@ api = Blueprint("api", __name__, url_prefix="/v1")
 
 
 DEFAULT_ARTICLE_LIMIT  = 5
+DEFAULT_TAG_LIMIT      = 50
 DEFAULT_ARTICLE_OFFSET = 0
 
 
@@ -19,7 +20,7 @@ GET tag_articles
 @api.route('/articles/tag/<string:tag_name>')
 def show_tag_articles(tag_name):
 
-    limit  = _get_limit(request.args.get('limit'))
+    limit  = _get_article_limit(request.args.get('limit'))
     offset = _get_offset(request.args.get('offset'))
     current_app.logger.debug(tag_name)
 
@@ -48,7 +49,7 @@ GET articles
 @api.route('/articles')
 def show_articles():
 
-    limit  = _get_limit(request.args.get('limit'))
+    limit  = _get_article_limit(request.args.get('limit'))
     offset = _get_offset(request.args.get('offset'))
 
     articles = Article.query.offset(offset).limit(limit)
@@ -60,6 +61,32 @@ def show_articles():
 
     return jsonify(
         articles=[a.serialize() for a in articles],
+        nextOffset=next_offset,
+        isNext=is_next,
+        limit=limit,
+        offset=offset
+    )
+
+
+'''
+Get tags
+'''
+@api.route('/tags')
+def show_tags():
+    limit  = _get_tag_limit(request.args.get('limit'))
+    offset = _get_offset(request.args.get('offset'))
+
+    tags = Tag.query \
+        .order_by(Tag.id) \
+        .offset(offset)\
+        .limit(limit)
+
+    tag_count = Article.query.count()
+    next_offset = min(limit + offset, tag_count)
+    is_next = next_offset != tag_count
+
+    return jsonify(
+        tags=[a.serialize() for a in tags],
         nextOffset=next_offset,
         isNext=is_next,
         limit=limit,
@@ -96,8 +123,11 @@ def add():
 Methods
 '''
 
-def _get_limit(l):
+def _get_article_limit(l):
     return int(l) if l is not None else DEFAULT_ARTICLE_LIMIT
+
+def _get_tag_limit(l):
+    return int(l) if l is not None else DEFAULT_TAG_LIMIT
 
 def _get_offset(o):
     return int(o) if o is not None else DEFAULT_ARTICLE_OFFSET
