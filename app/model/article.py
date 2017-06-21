@@ -1,6 +1,6 @@
 from .database import db
-from datetime import datetime
 from flask import current_app
+from timezone import localize
 from . import article_tag
 from . import tag
 
@@ -11,7 +11,7 @@ class Article(db.Model):
     body = db.Column(db.String(255))
     url = db.Column(db.String(255))
     thumbnail = db.Column(db.String(255))
-    published_at = db.Column(db.DateTime)
+    published_at = db.Column(db.DateTime(timezone=True))
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
     tags = db.relationship('Tag', secondary='article_tags')
@@ -21,17 +21,18 @@ class Article(db.Model):
         self.body = body
         self.url = url
         self.thumbnail = thumbnail
-        self.published_at = datetime.isoformat(published_at)
+        self.published_at = published_at
 
     def serialize(self):
-        # current_app.logger.debug(self.published_at.isoformat())
+        published_at = localize(self.published_at)
+        current_app.logger.debug(published_at)
         return {
             'id': self.id,
             'title': self.title,
             'body': self.body,
             'url': self.url,
             'thumbnail': self.thumbnail,
-            'published_at': self.published_at,
+            'published_at': f'{published_at}',
             'tags': [t.serialize() for t in self.tags]
         }
 
