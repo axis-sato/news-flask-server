@@ -1,8 +1,5 @@
 from .database import db
-from flask import current_app
 from timezone import localize
-from . import article_tag
-from . import tag
 
 class Article(db.Model):
     __tablename__ = 'articles'
@@ -25,7 +22,6 @@ class Article(db.Model):
 
     def serialize(self):
         published_at = localize(self.published_at)
-        current_app.logger.debug(published_at)
         return {
             'id': self.id,
             'title': self.title,
